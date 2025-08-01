@@ -28,3 +28,11 @@ cargo build --release
 # for the discord bot
 ./target/release/summoner-emoji-bot bot
 ```
+
+To run the bot as a docker container:
+
+```bash
+docker build -t summoner-emoji-bot:latest .
+
+docker run -e DISCORD_TOKEN=your_token_here summoner-emoji-bot:latest
+```
