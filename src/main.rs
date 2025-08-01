@@ -2,18 +2,32 @@ mod bot;
 mod clipboard;
 mod emoji_generator;
 
-fn main() {
-    let generator = emoji_generator::EmojiGenerator::new();
-    let unique_emojis = generator.generate(5);
+use std::env;
 
-    // convert the emojis to a single string
-    let result = unique_emojis.join(" ");
+#[tokio::main]
+async fn main() {
+    let args = env::args().collect::<Vec<String>>();
+    
+    // Check if the user provided a command-line argument
+    if args.len() > 1 && args[1] == "bot" {
+        // If the argument is "bot", run the bot
+        bot::run().await;
+        return;
+    }
+    else {
+        // If no argument or a different argument is provided, run the emoji generator
+        let generator = emoji_generator::EmojiGenerator::new();
+        let unique_emojis = generator.generate(5);
 
-    // copy to clipboard
-    println!("Copying to clipboard: {}", result);
+        // convert the emojis to a single string
+        let result = unique_emojis.join(" ");
 
-    match clipboard::copy_to_clipboard(&result) {
-        Ok(_) => println!("Emojis copied to clipboard successfully!"),
-        Err(e) => eprintln!("Error copying to clipboard: {}", e),
+        // copy to clipboard
+        println!("Copying to clipboard: {}", result);
+
+        match clipboard::copy_to_clipboard(&result) {
+            Ok(_) => println!("Emojis copied to clipboard successfully!"),
+            Err(e) => eprintln!("Error copying to clipboard: {}", e),
+        }
     }
 }

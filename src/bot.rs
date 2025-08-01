@@ -39,10 +39,7 @@ impl EventHandler for Handler {
     }
 }
 
-// The `main` function is the entry point of our program.
-// We use the `tokio::main` macro to run it in an async context.
-#[tokio::main]
-async fn run() {
+pub async fn run() {
     // Get the bot token from the `DISCORD_TOKEN` environment variable.
     // The `.expect()` method will cause the program to panic if the variable is not set.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
