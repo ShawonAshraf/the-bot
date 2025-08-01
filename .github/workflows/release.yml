@@ -1,0 +1,51 @@
+name: Build and Release Binaries
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [ x86_64-unknown-linux-gnu, armv7-unknown-linux-musleabihf ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - name: Install cross dependencies
+        if: matrix.target == 'armv7-unknown-linux-musleabihf'
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-linux-gnueabihf musl-tools
+      - name: Build
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: random-approver-${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/random-approver
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/random-approver-x86_64-unknown-linux-gnu/summoner-emoji-bot
+            artifacts/random-approver-armv7-unknown-linux-musleabihf/summoner-emoji-bot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
