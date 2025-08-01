@@ -1,3 +1,4 @@
+mod bot;
 mod clipboard;
 mod emoji_generator;
 
