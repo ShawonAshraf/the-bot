@@ -11,6 +11,7 @@ async fn main() {
     // Check if the user provided a command-line argument
     if args.len() > 1 && args[1] == "bot" {
         // If the argument is "bot", run the bot
+        println!("Running the Discord bot...");
         bot::run().await;
         return;
     }
