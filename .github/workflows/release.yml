@@ -63,4 +63,4 @@ jobs:
             artifacts/summoner-emoji-bot-x86_64-pc-windows-gnu.exe/summoner-emoji-bot.exe
             artifacts/summoner-emoji-bot-x86_64-apple-darwin/summoner-emoji-bot
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
