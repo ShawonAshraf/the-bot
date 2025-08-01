@@ -58,6 +58,12 @@ mod tests {
     /// the original string.
     #[test]
     fn test_copy_and_paste() {
+        // skip in github action runners
+        if std::env::var("CI").is_ok() {
+            // Skip clipboard test in CI environments
+            eprintln!("Skipping clipboard test in CI");
+            return;
+        }
         // 1. Define the test string we want to copy.
         let test_string = "Hello, Rust Clipboard!";
 
