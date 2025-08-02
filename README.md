@@ -4,6 +4,7 @@
 
 
 [![Test](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml)
+[![Build and Release Binaries](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml)
 
 I have to approve a lot of pull requests, and I thought it would be fun to have a random emoji generator to use as an
 approval message. Then I was suggested to make a discord bot based on it. There are two components to this project:
@@ -15,8 +16,10 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 ## Usage
 
 > [!NOTE]
-> Make sure to create a discord bot application on the discord developer portal with the following permission and scope first!:
-> `bot` and `send messages`. Also enable `GUILD_MESSAGES` permissions in the previeleged access section so that the bot can read 
+> Make sure to create a discord bot application on the discord developer portal with the following permission and scope
+> first!:
+> `bot` and `send messages`. Also enable `GUILD_MESSAGES` permissions in the previeleged access section so that the bot
+> can read
 > instructions.
 
 ### Build

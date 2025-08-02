@@ -55,12 +55,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
-      - name: List downloaded artifacts (debug)
-        run: |
-          echo "=== Artifacts directory structure ==="
-          find artifacts -type f -ls
-          echo "=== Directory listing ==="
-          ls -la artifacts/
       - name: Prepare release files
         run: |
           mkdir -p release-files
