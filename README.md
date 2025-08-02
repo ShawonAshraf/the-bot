@@ -3,7 +3,7 @@
 > A random emoji generator bot in Rust
 
 
-[![Test](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml)   [![Build and Release Binaries](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml)
+[![Test](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml)
 
 I have to approve a lot of pull requests, and I thought it would be fun to have a random emoji generator to use as an
 approval message. Then I was suggested to make a discord bot based on it. There are two components to this project:
