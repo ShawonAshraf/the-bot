@@ -1,4 +1,4 @@
-from rust:1.88-bullseye
+FROM rust:1.88-bullseye
 
 WORKDIR /bot
 
