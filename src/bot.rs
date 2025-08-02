@@ -22,7 +22,7 @@ impl EventHandler for Handler {
         if msg.content.starts_with("!summon") && !msg.mentions.is_empty() {
             let emoji_generator = EmojiGenerator::new();
             // Generate a list of unique emojis.
-            let unique_emojis = emoji_generator.generate(5);
+            let unique_emojis = emoji_generator.generate(7);
             // Convert the emojis to a single string.
             let result = unique_emojis.join(" ");
 
