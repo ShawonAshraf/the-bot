@@ -1,6 +1,7 @@
 use std::env;
 
-use crate::emoji_generator::{self, EmojiGenerator};
+use crate::emoji_generator::EmojiGenerator;
+use rand::Rng;
 use serenity::async_trait;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
@@ -34,7 +35,8 @@ impl EventHandler for Handler {
         // check for the !oracle command
         if msg.content.starts_with("!oracle") {
             let emoji_generator: EmojiGenerator = EmojiGenerator::new();
-            let unique_emojis: Vec<String> = emoji_generator.generate(10);
+            let emoji_count = rand::rng().random_range(5..=15);
+            let unique_emojis: Vec<String> = emoji_generator.generate(emoji_count);
             let result: String = unique_emojis.join(" ");
 
             if let Err(why) = msg.channel_id.say(&ctx.http, result).await {
