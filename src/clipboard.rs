@@ -7,6 +7,7 @@ extern crate clipboard;
 
 use clipboard::{ClipboardContext, ClipboardProvider};
 use std::error::Error;
+use tracing::{info, warn, debug};
 
 /// Copies the given text to the system clipboard.
 ///
@@ -26,21 +27,37 @@ use std::error::Error;
 ///
 /// ```
 /// use crate::clipboard::copy_to_clipboard;
+/// use tracing::{info, error};
 ///
 /// match copy_to_clipboard("hello world") {
-///     Ok(_) => println!("Copied to clipboard!"),
-///     Err(e) => eprintln!("Error: {}", e),
+///     Ok(_) => info!("Copied to clipboard!"),
+///     Err(e) => error!(error = %e, "Failed to copy to clipboard"),
 /// }
 /// ```
 pub fn copy_to_clipboard(text: &str) -> Result<(), Box<dyn Error>> {
+    debug!(text_length = text.len(), "Attempting to copy text to clipboard");
+    
     // Create a new clipboard context. This is the entry point to using the clipboard.
-    let mut ctx: ClipboardContext = ClipboardProvider::new()?;
+    let mut ctx: ClipboardContext = ClipboardProvider::new()
+        .map_err(|e| {
+            warn!(error = ?e, "Failed to create clipboard context");
+            e
+        })?;
 
     // Set the contents of the clipboard to the provided text.
     // The `set_contents` method takes ownership of a String, so we convert `text`.
-    ctx.set_contents(text.to_owned())?;
+    ctx.set_contents(text.to_owned())
+        .map_err(|e| {
+            warn!(
+                error = ?e,
+                text_length = text.len(),
+                "Failed to set clipboard contents"
+            );
+            e
+        })?;
 
     // If both operations succeed, return Ok.
+    info!(text_length = text.len(), "Successfully copied text to clipboard");
     Ok(())
 }
 
@@ -61,7 +78,7 @@ mod tests {
         // skip in github action runners
         if std::env::var("CI").is_ok() {
             // Skip clipboard test in CI environments
-            eprintln!("Skipping clipboard test in CI");
+            warn!("Skipping clipboard test in CI environment");
             return;
         }
         // 1. Define the test string we want to copy.

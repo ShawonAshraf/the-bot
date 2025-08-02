@@ -6,6 +6,7 @@ use serenity::async_trait;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
+use tracing::{info, error, debug};
 
 // Define a struct to hold our event handler.
 // It doesn't need any data for this simple bot.
@@ -21,57 +22,136 @@ impl EventHandler for Handler {
         // The `starts_with` method checks if the message begins with the specified string.
         // We also check that the `mentions` vector is not empty to ensure a user was tagged.
         if msg.content.starts_with("!summon") && !msg.mentions.is_empty() {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                mentions_count = msg.mentions.len(),
+                "Processing summon command"
+            );
+
             let emoji_generator: EmojiGenerator = EmojiGenerator::new();
             // Generate a list of unique emojis.
             let unique_emojis: Vec<String> = emoji_generator.generate(7);
             // Convert the emojis to a single string.
             let result: String = unique_emojis.join(" ");
 
-            if let Err(why) = msg.channel_id.say(&ctx.http, result).await {
-                println!("Error sending message: {:?}", why);
+            debug!(emojis = %result, "Generated emojis for summon command");
+
+            if let Err(why) = msg.channel_id.say(&ctx.http, &result).await {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    "Failed to send summon command response"
+                );
+            } else {
+                info!(
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    emoji_count = unique_emojis.len(),
+                    "Successfully sent summon command response"
+                );
             }
         }
 
         // check for the !oracle command
         if msg.content.starts_with("!oracle") {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing oracle command"
+            );
+
             let emoji_generator: EmojiGenerator = EmojiGenerator::new();
             let emoji_count = rand::rng().random_range(5..=15);
             let unique_emojis: Vec<String> = emoji_generator.generate(emoji_count);
             let result: String = unique_emojis.join(" ");
 
-            if let Err(why) = msg.channel_id.say(&ctx.http, result).await {
-                println!("Error sending message: {:?}", why);
+            debug!(
+                emojis = %result,
+                emoji_count = emoji_count,
+                "Generated emojis for oracle command"
+            );
+
+            if let Err(why) = msg.channel_id.say(&ctx.http, &result).await {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    emoji_count = emoji_count,
+                    "Failed to send oracle command response"
+                );
+            } else {
+                info!(
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    emoji_count = emoji_count,
+                    "Successfully sent oracle command response"
+                );
             }
         }
     }
 
     // This method is called when the bot is ready to start receiving events.
     async fn ready(&self, _: Context, ready: Ready) {
-        // When the bot is ready, we'll print its username to the console.
-        println!("{} is connected!", ready.user.name);
+        // When the bot is ready, we'll log connection details
+        info!(
+            bot_name = %ready.user.name,
+            bot_id = %ready.user.id,
+            guild_count = ready.guilds.len(),
+            "Discord bot is connected and ready"
+        );
     }
 }
 
 pub async fn run() {
     // Get the bot token from the `DISCORD_TOKEN` environment variable.
-    // The `.expect()` method will cause the program to panic if the variable is not set.
-    let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
+    info!("Initializing Discord bot");
+    
+    let token = match env::var("DISCORD_TOKEN") {
+        Ok(token) => {
+            info!("Successfully retrieved Discord token from environment");
+            token
+        }
+        Err(e) => {
+            error!(error = ?e, "Failed to get DISCORD_TOKEN environment variable");
+            panic!("Expected a token in the environment");
+        }
+    };
 
     // Define the intents for our bot. Intents tell Discord which events our bot wants to receive.
     // For this bot, we need `GUILD_MESSAGES` to receive message events in servers,
     // and `MESSAGE_CONTENT` to read the content of the messages.
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
+    info!("Configured bot intents: GUILD_MESSAGES | MESSAGE_CONTENT");
 
     // Create a new client instance with the token, intents, and our event handler.
-    let mut client = Client::builder(&token, intents)
+    info!("Creating Discord client");
+    let mut client = match Client::builder(&token, intents)
         .event_handler(Handler)
         .await
-        .expect("Err creating client");
+    {
+        Ok(client) => {
+            info!("Successfully created Discord client");
+            client
+        }
+        Err(e) => {
+            error!(error = ?e, "Failed to create Discord client");
+            panic!("Error creating client: {:?}", e);
+        }
+    };
 
     // Start the client. This will connect to Discord and start listening for events.
-    // The `if let Err` block will print an error message if the client fails to start.
+    info!("Starting Discord client connection");
     if let Err(why) = client.start().await {
-        println!("Client error: {:?}", why);
+        error!(
+            error = ?why,
+            "Discord client encountered a fatal error during startup or runtime"
+        );
+    } else {
+        info!("Discord client shut down gracefully");
     }
 }
 
