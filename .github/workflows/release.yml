@@ -55,14 +55,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
-      - name: List downloaded artifacts (debug)
-        run: find artifacts -type f -ls
+      - name: Prepare release files
+        run: |
+          mkdir -p release-files
+          cp artifacts/summoner-emoji-bot-linux-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-linux-x86_64
+          cp artifacts/summoner-emoji-bot-windows-x86_64.exe/summoner-emoji-bot.exe release-files/summoner-emoji-bot-windows-x86_64.exe
+          cp artifacts/summoner-emoji-bot-macos-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-macos-x86_64
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            artifacts/summoner-emoji-bot-x86_64-unknown-linux-gnu/summoner-emoji-bot
-            artifacts/summoner-emoji-bot-x86_64-pc-windows-gnu.exe/summoner-emoji-bot.exe
-            artifacts/summoner-emoji-bot-x86_64-apple-darwin/summoner-emoji-bot
+          files: release-files/*
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
