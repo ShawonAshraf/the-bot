@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::emoji_generator::EmojiGenerator;
+use crate::emoji_generator::{self, EmojiGenerator};
 use serenity::async_trait;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
@@ -20,11 +20,22 @@ impl EventHandler for Handler {
         // The `starts_with` method checks if the message begins with the specified string.
         // We also check that the `mentions` vector is not empty to ensure a user was tagged.
         if msg.content.starts_with("!summon") && !msg.mentions.is_empty() {
-            let emoji_generator = EmojiGenerator::new();
+            let emoji_generator: EmojiGenerator = EmojiGenerator::new();
             // Generate a list of unique emojis.
-            let unique_emojis = emoji_generator.generate(7);
+            let unique_emojis: Vec<String> = emoji_generator.generate(7);
             // Convert the emojis to a single string.
-            let result = unique_emojis.join(" ");
+            let result: String = unique_emojis.join(" ");
+
+            if let Err(why) = msg.channel_id.say(&ctx.http, result).await {
+                println!("Error sending message: {:?}", why);
+            }
+        }
+
+        // check for the !oracle command
+        if msg.content.starts_with("!oracle") {
+            let emoji_generator: EmojiGenerator = EmojiGenerator::new();
+            let unique_emojis: Vec<String> = emoji_generator.generate(10);
+            let result: String = unique_emojis.join(" ");
 
             if let Err(why) = msg.channel_id.say(&ctx.http, result).await {
                 println!("Error sending message: {:?}", why);
