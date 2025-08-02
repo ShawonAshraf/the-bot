@@ -14,7 +14,7 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 
 ## Usage
 
-> [!INFO]
+> [!NOTE]
 > Make sure to create a discord bot application on the discord developer portal with the following permission and scope first!:
 > `bot` and `send messages`. Also enable `GUILD_MESSAGES` permissions in the previeleged access section so that the bot can read 
 > instructions.
@@ -45,7 +45,7 @@ docker run -e DISCORD_TOKEN=your_token_here summoner-emoji-bot:latest
 
 ### Building for Linux
 
-> [!INFO]
+> [!NOTE]
 > This is in case you don't have access to a machine running linux
 
 ```bash
