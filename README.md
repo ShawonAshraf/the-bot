@@ -26,6 +26,7 @@ cargo build --release
 # for the emoji generator
 ./target/release/summoner-emoji-bot
 # for the discord bot
+export DISCORD_TOKEN=your_token_here
 ./target/release/summoner-emoji-bot bot
 ```
 
