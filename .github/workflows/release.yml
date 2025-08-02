@@ -65,7 +65,7 @@ jobs:
         run: |
           mkdir -p release-files
           cp artifacts/summoner-emoji-bot-linux-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-linux-x86_64
-          cp artifacts/summoner-emoji-bot-windows-x86_64.exe/summoner-emoji-bot.exe release-files/summoner-emoji-bot-windows-x86_64.exe
+          cp artifacts/summoner-emoji-bot-windows-x86_64/summoner-emoji-bot.exe release-files/summoner-emoji-bot-windows-x86_64.exe
           cp artifacts/summoner-emoji-bot-macos-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-macos-x86_64
       - name: Create release
         uses: softprops/action-gh-release@v2
