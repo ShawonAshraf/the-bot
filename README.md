@@ -24,7 +24,7 @@ cargo build --release
 
 ```bash
 # for the emoji generator
-./target/release/random-approver
+./target/release/summoner-emoji-bot
 # for the discord bot
 ./target/release/summoner-emoji-bot bot
 ```
@@ -35,4 +35,16 @@ To run the bot as a docker container:
 docker build -t summoner-emoji-bot:latest .
 
 docker run -e DISCORD_TOKEN=your_token_here summoner-emoji-bot:latest
+```
+
+### Building for Linux
+
+```bash
+# make a directory at the project root named penguin to store the build
+mkdir -p penguin
+# Build the image
+docker build -f penguin.Dockerfile -t summoner-linux-builder .
+
+# Run the container with volume mount to save binaries locally
+docker run -v ./penguin:/penguin summoner-linux-builder
 ```
