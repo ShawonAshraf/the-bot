@@ -14,8 +14,6 @@ pub struct Joke {
 pub enum JokeError {
     #[error("Request failed: {0}")]
     Request(#[from] reqwest::Error),
-    #[error("No jokes found")]
-    NoJokes,
 }
 
 pub async fn fetch_joke() -> Result<Vec<Joke>, JokeError> {
