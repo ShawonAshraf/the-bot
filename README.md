@@ -4,7 +4,6 @@
 
 
 [![Test](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/test.yml)
-[![Build and Release Binaries](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml/badge.svg)](https://github.com/ShawonAshraf/summoner-emoji-bot/actions/workflows/release.yml)
 
 I have to approve a lot of pull requests, and I thought it would be fun to have a random emoji generator to use as an
 approval message. Then I was suggested to make a discord bot based on it. There are two parts to this project:
@@ -24,9 +23,7 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 > instructions.
 
 
-Download the binary for your platform from
-the [releases page](https://github.com/ShawonAshraf/summoner-emoji-bot/releases/).
-Then run it via a shell. The following example shows how to run the bot on linux:
+Build the project locally (check [Local Build](#local-build)) and then run:
 
 ```bash
 chmod +x summoner-emoji-bot-linux-x86_64
@@ -46,7 +43,7 @@ cargo build --release
 ```
 
 > [!NOTE]
-> In case you don't have access to a machine running linux, use the docker image for building the project for linux.
+> In case you don't have access to a machine running linux and would like to run the bot on some linux server, use the docker image for building the project for linux.
 
 ```bash
 # make a directory at the project root named penguin to store the build
