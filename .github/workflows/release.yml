@@ -58,9 +58,25 @@ jobs:
       - name: Prepare release files
         run: |
           mkdir -p release-files
+          # linux64
           cp artifacts/summoner-emoji-bot-linux-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-linux-x86_64
+          cp artifacts/summoner-emoji-bot-linux-x86_64/summoner-emoji-bot.d release-files/summoner-emoji-bot-linux-x86_64.d
+
+          # windows64
           cp artifacts/summoner-emoji-bot-windows-x86_64/summoner-emoji-bot.exe release-files/summoner-emoji-bot-windows-x86_64.exe
+          cp artifacts/summoner-emoji-bot-windows-x86_64/summoner-emoji-bot.d release-files/summoner-emoji-bot-windows-x86_64.d
+
+          # macos64
           cp artifacts/summoner-emoji-bot-macos-x86_64/summoner-emoji-bot release-files/summoner-emoji-bot-macos-x86_64
+          cp artifacts/summoner-emoji-bot-macos-x86_64/summoner-emoji-bot.d release-files/summoner-emoji-bot-macos-x86_64.d
+
+          # zip
+          cd temp/linux && zip ../../release-files/summoner-emoji-bot-linux-x86_64.zip summoner-emoji-bot summoner-emoji-bot.d && cd ../..
+          cd temp/windows && zip ../../release-files/summoner-emoji-bot-windows-x86_64.zip summoner-emoji-bot.exe summoner-emoji-bot.d && cd ../..
+          cd temp/macos && zip ../../release-files/summoner-emoji-bot-macos-x86_64.zip summoner-emoji-bot summoner-emoji-bot.d && cd ../..
+
+          # cleanup
+          rm -rf temp
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
