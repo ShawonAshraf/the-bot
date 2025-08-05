@@ -13,15 +13,21 @@ jobs:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
             artifact_name: summoner-emoji-bot-linux-x86_64
-            bin_path: target/x86_64-unknown-linux-gnu/release/summoner-emoji-bot
+            path: | 
+              target/x86_64-unknown-linux-gnu/release/summoner-emoji-bot
+              target/x86_64-unknown-linux-gnu/release/summoner-emoji-bot.d
           - target: x86_64-pc-windows-gnu
             os: ubuntu-latest
             artifact_name: summoner-emoji-bot-windows-x86_64
-            bin_path: target/x86_64-pc-windows-gnu/release/summoner-emoji-bot.exe
+            path: | 
+              target/x86_64-pc-windows-gnu/release/summoner-emoji-bot.exe
+              target/x86_64-pc-windows-gnu/release/summoner-emoji-bot.d
           - target: x86_64-apple-darwin
             os: macos-latest
             artifact_name: summoner-emoji-bot-macos-x86_64
-            bin_path: target/x86_64-apple-darwin/release/summoner-emoji-bot
+            path: |
+              target/x86_64-apple-darwin/release/summoner-emoji-bot
+              target/x86_64-apple-darwin/release/summoner-emoji-bot.d
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
