@@ -1879,6 +1879,7 @@ dependencies = [
  "reqwest 0.12.22",
  "serde",
  "serenity",
+ "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
