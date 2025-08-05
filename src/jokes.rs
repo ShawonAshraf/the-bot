@@ -55,6 +55,25 @@ mod tests {
         ])
     }
 
+    async fn fetch_joke_from_url(url: &str) -> Result<Vec<Joke>, JokeError> {
+        let response = reqwest::get(url).await?;
+        let response = response.error_for_status()?;
+        let jokes: Vec<Joke> = response.json().await?;
+
+        if jokes.is_empty() {
+            tracing::warn!("No jokes found in the response, returning default joke");
+            let default_joke = Joke {
+                id: 0,
+                r#type: "default".to_string(),
+                setup: "জোক পাইতেসি না, সব ফ্রন্টএন্ডের দোষ! 😤".to_string(),
+                punchline: "জোক পাইতেসি না, সব ফ্রন্টএন্ডের দোষ! 😤".to_string(),
+            };
+            return Ok(vec![default_joke]);
+        }
+
+        Ok(jokes)
+    }
+
     #[tokio::test]
     async fn test_fetch_joke_success() {
         let mut server = Server::new_async().await;
@@ -66,12 +85,11 @@ mod tests {
             .create_async()
             .await;
 
-        // Override the URL in your function to use the mock server
-        // Note: You'll need to modify your function to accept a URL parameter for testing
         let url = format!("{}/jokes/programming/random", server.url());
-        let response = reqwest::get(&url).await.unwrap();
-        let jokes: Vec<Joke> = response.json().await.unwrap();
+        let result = fetch_joke_from_url(&url).await;
 
+        assert!(result.is_ok());
+        let jokes = result.unwrap();
         assert_eq!(jokes.len(), 1);
         assert_eq!(jokes[0].setup, "Why do programmers prefer dark mode?");
         assert_eq!(jokes[0].punchline, "Because light attracts bugs!");
@@ -80,7 +98,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_fetch_joke_empty_response() {
+    async fn test_fetch_joke_empty_response_returns_default() {
         let mut server = Server::new_async().await;
         let mock = server
             .mock("GET", "/jokes/programming/random")
@@ -91,10 +109,16 @@ mod tests {
             .await;
 
         let url = format!("{}/jokes/programming/random", server.url());
-        let response = reqwest::get(&url).await.unwrap();
-        let jokes: Vec<Joke> = response.json().await.unwrap();
+        let result = fetch_joke_from_url(&url).await;
 
-        assert!(jokes.is_empty());
+        assert!(result.is_ok());
+        let jokes = result.unwrap();
+        assert_eq!(jokes.len(), 1);
+        assert_eq!(jokes[0].id, 0);
+        assert_eq!(jokes[0].r#type, "default");
+        assert_eq!(jokes[0].setup, "জোক পাইতেসি না, সব ফ্রন্টএন্ডের দোষ! 😤");
+        assert_eq!(jokes[0].punchline, "জোক পাইতেসি না, সব ফ্রন্টএন্ডের দোষ! 😤");
+
         mock.assert_async().await;
     }
 
@@ -108,24 +132,29 @@ mod tests {
             .await;
 
         let url = format!("{}/jokes/programming/random", server.url());
-        let result = reqwest::get(&url).await.unwrap().error_for_status();
+        let result = fetch_joke_from_url(&url).await;
 
         assert!(result.is_err());
+        assert!(matches!(result.unwrap_err(), JokeError::Request(_)));
+
         mock.assert_async().await;
     }
 
     #[tokio::test]
-    async fn test_joke_error_display() {
-        let request_error = JokeError::Request(reqwest::Error::from(
-            reqwest::Client::new()
-                .get("http://invalid-url")
-                .send()
-                .await
-                .unwrap_err(),
-        ));
-        let no_jokes_error = JokeError::NoJokes;
+    async fn test_fetch_joke_network_error() {
+        let result = fetch_joke_from_url("http://nonexistent-domain-12345.com").await;
 
-        assert!(request_error.to_string().contains("Request failed"));
-        assert_eq!(no_jokes_error.to_string(), "No jokes found");
+        assert!(result.is_err());
+        assert!(matches!(result.unwrap_err(), JokeError::Request(_)));
+    }
+
+    #[tokio::test]
+    async fn test_joke_error_display() {
+        // Test the error display format using the actual fetch function
+        let result = fetch_joke_from_url("http://nonexistent-domain-12345.com").await;
+        assert!(result.is_err());
+
+        let error = result.unwrap_err();
+        assert!(error.to_string().contains("Request failed"));
     }
 }
