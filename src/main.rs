@@ -1,9 +1,10 @@
 mod bot;
 mod clipboard;
 mod emoji_generator;
+mod jokes;
 
 use std::env;
-use tracing::{info, error};
+use tracing::{error, info};
 
 #[tokio::main]
 async fn main() {
@@ -13,15 +14,14 @@ async fn main() {
     info!("Starting Summoner Emoji Bot application");
 
     let args = env::args().collect::<Vec<String>>();
-    
+
     // Check if the user provided a command-line argument
     if args.len() > 1 && args[1] == "bot" {
         // If the argument is "bot", run the bot
         info!("Starting Discord bot mode");
         bot::run().await;
         return;
-    }
-    else {
+    } else {
         // If no argument or a different argument is provided, run the emoji generator
         info!("Starting emoji generator mode");
         let generator = emoji_generator::EmojiGenerator::new();
