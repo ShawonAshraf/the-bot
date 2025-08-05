@@ -55,7 +55,7 @@ mkdir -p penguin
 docker build -f penguin.Dockerfile -t summoner-linux-builder .
 
 # Run the container with volume mount to save binaries locally
-docker run -v ./:/bot -v ./penguin:/penguin summoner-linux-build
+docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin summoner-linux-build
 ```
 
 ### Testing
