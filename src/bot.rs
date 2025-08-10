@@ -2,6 +2,7 @@ use std::env;
 
 use crate::emoji_generator::EmojiGenerator;
 use crate::jokes::fetch_joke;
+use crate::api_checker::check_backend_health;
 use rand::Rng;
 use serenity::async_trait;
 use serenity::model::channel::Message;
@@ -137,6 +138,26 @@ impl EventHandler for Handler {
                         user_id = %msg.author.id,
                         "Failed to fetch joke"
                     );
+                }
+            }
+        }
+    
+        if msg.content.starts_with("!health") {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing health command"
+            );
+
+            match check_backend_health().await {
+                Ok(status) => {
+                    if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
+                        error!(error = ?why, "Failed to send health response");
+                    }
+                }
+                Err(e) => {
+                    error!(error = ?e, "Failed to check backend health");
                 }
             }
         }
