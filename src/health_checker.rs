@@ -13,23 +13,26 @@ struct ParsedData {
     environment: String,
 }
 
-
 fn parse_message(message: &str) -> Result<ParsedData, String> {
     // Split the message into parts
     let parts: Vec<&str> = message.split_whitespace().collect();
-    
+
     // Check if the message has at least 3 parts
     if parts.len() < 3 {
-        return Err("Invalid message format. Expected format: '!health <service> <environment>'".into());
+        return Err(
+            "Invalid message format. Expected format: '!health <service> <environment>'".into(),
+        );
     }
 
     // Extract service and environment
     let service = parts[1].to_string();
     let environment = parts[2].to_string();
 
-    Ok(ParsedData { service, environment })
+    Ok(ParsedData {
+        service,
+        environment,
+    })
 }
-
 
 pub async fn check_health(message: String) -> Result<String, Error> {
     // parse the message
@@ -37,10 +40,13 @@ pub async fn check_health(message: String) -> Result<String, Error> {
         Ok(data) => data,
         Err(e) => return Ok(e),
     };
-    
-    
+
     // find the url var from env
-    let url_var = format!("{}_{}_URL", parsed.service.to_uppercase(), parsed.environment.to_uppercase());
+    let url_var = format!(
+        "{}_{}_URL",
+        parsed.service.to_uppercase(),
+        parsed.environment.to_uppercase()
+    );
     let url = match env::var(&url_var) {
         Ok(url) => url,
         Err(_) => {
@@ -50,7 +56,7 @@ pub async fn check_health(message: String) -> Result<String, Error> {
             ));
         }
     };
-    
+
     // Make a GET request to the backend URL
     let resp = reqwest::get(&url).await?;
 
@@ -74,5 +80,4 @@ pub async fn check_health(message: String) -> Result<String, Error> {
         "Backend is NOT running ❌ — HTTP status: {}",
         resp.status()
     ))
-    
 }

@@ -1,11 +1,10 @@
-mod health_checker;
 mod bot;
 mod clipboard;
 mod emoji_generator;
+mod health_checker;
 mod jokes;
 
 use std::env;
-use serenity::futures::future::err;
 use tracing::{error, info};
 
 #[tokio::main]
@@ -39,7 +38,7 @@ async fn main() {
             Ok(_) => info!("Emojis copied to clipboard successfully"),
             Err(e) => error!(error = %e, "Failed to copy emojis to clipboard"),
         }
-    } else { 
+    } else {
         error!("Invalid arguments supplied");
     }
 }
