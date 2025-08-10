@@ -14,7 +14,7 @@ struct ParsedData {
 }
 
 
-pub fn parse_message(message: &str) -> Result<ParsedData, String> {
+fn parse_message(message: &str) -> Result<ParsedData, String> {
     // Split the message into parts
     let parts: Vec<&str> = message.split_whitespace().collect();
     
