@@ -43,7 +43,8 @@ cargo build --release
 ```
 
 > [!NOTE]
-> In case you don't have access to a machine running linux and would like to run the bot on some linux server, use the docker image for building the project for linux.
+> In case you don't have access to a machine running linux and would like to run the bot on some linux server, use the
+> docker image for building the project for linux.
 
 ```bash
 # make a directory at the project root named penguin to store the build
@@ -52,7 +53,7 @@ mkdir -p penguin
 docker build -f penguin.Dockerfile -t summoner-linux-builder .
 
 # Run the container with volume mount to save binaries locally
-docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin summoner-linux-build
+docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin summoner-linux-builder
 ```
 
 ### Testing
