@@ -64,20 +64,28 @@ pub async fn check_health(message: String) -> Result<String, Error> {
     if resp.status().is_success() {
         return if let Ok(data) = resp.json::<HealthResponse>().await {
             if data.status.to_lowercase() == "ok" {
-                Ok("Backend is running ✅".into())
+                let msg = format!(
+                    "{} :: {} is running ✅ - status: {}",
+                    parsed.service, parsed.environment, data.status
+                );
+                Ok(msg.into())
             } else {
                 Ok(format!(
-                    "Backend is NOT running ❌ — status: {}",
+                    "{} :: {} NOT running ❌ — status: {}",
+                    parsed.service,
+                    parsed.environment,
                     data.status
                 ))
             }
         } else {
-            Ok("Backend is NOT running ❌ — invalid JSON".into())
+            Ok("Invalid JSON response from the endpoint".into())
         };
     }
 
     Ok(format!(
-        "Backend is NOT running ❌ — HTTP status: {}",
+        "{} :: {} NOT running ❌ — HTTP status: {}",
+        parsed.service,
+        parsed.environment,
         resp.status()
     ))
 }
