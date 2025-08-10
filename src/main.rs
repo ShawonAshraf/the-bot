@@ -1,3 +1,4 @@
+mod api_checker;
 mod bot;
 mod clipboard;
 mod emoji_generator;
