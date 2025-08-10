@@ -1,7 +1,7 @@
 use std::env;
 
-use crate::api_checker::check_backend_health;
 use crate::emoji_generator::EmojiGenerator;
+use crate::health_checker::check_health;
 use crate::jokes::fetch_joke;
 use rand::Rng;
 use serenity::async_trait;
@@ -150,7 +150,7 @@ impl EventHandler for Handler {
                 "Processing health command"
             );
 
-            match check_backend_health().await {
+            match check_health(msg.content).await {
                 Ok(status) => {
                     if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
                         error!(error = ?why, "Failed to send health response");
