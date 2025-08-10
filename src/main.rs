@@ -1,10 +1,11 @@
-mod api_checker;
+mod health_checker;
 mod bot;
 mod clipboard;
 mod emoji_generator;
 mod jokes;
 
 use std::env;
+use serenity::futures::future::err;
 use tracing::{error, info};
 
 #[tokio::main]
@@ -39,11 +40,6 @@ async fn main() {
             Err(e) => error!(error = %e, "Failed to copy emojis to clipboard"),
         }
     } else { 
-        info!("Starting api health checker");
-        let api_status = api_checker::check_backend_health().await;
-        match api_status {
-            Ok(status) => info!(status = %status, "API health check completed"),
-            Err(e) => error!(error = %e, "Failed to check API health"),
-        }
+        error!("Invalid arguments supplied");
     }
 }
