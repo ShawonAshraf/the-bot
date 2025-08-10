@@ -22,7 +22,7 @@ async fn main() {
         info!("Starting Discord bot mode");
         bot::run().await;
         return;
-    } else {
+    } else if args.len() > 1 && args[1] == "emoji" {
         // If no argument or a different argument is provided, run the emoji generator
         info!("Starting emoji generator mode");
         let generator = emoji_generator::EmojiGenerator::new();
@@ -37,6 +37,13 @@ async fn main() {
         match clipboard::copy_to_clipboard(&result) {
             Ok(_) => info!("Emojis copied to clipboard successfully"),
             Err(e) => error!(error = %e, "Failed to copy emojis to clipboard"),
+        }
+    } else { 
+        info!("Starting api health checker");
+        let api_status = api_checker::check_backend_health().await;
+        match api_status {
+            Ok(status) => info!(status = %status, "API health check completed"),
+            Err(e) => error!(error = %e, "Failed to check API health"),
         }
     }
 }
