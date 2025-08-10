@@ -1,8 +1,8 @@
 use std::env;
 
+use crate::api_checker::check_backend_health;
 use crate::emoji_generator::EmojiGenerator;
 use crate::jokes::fetch_joke;
-use crate::api_checker::check_backend_health;
 use rand::Rng;
 use serenity::async_trait;
 use serenity::model::channel::Message;
@@ -141,7 +141,7 @@ impl EventHandler for Handler {
                 }
             }
         }
-    
+
         if msg.content.starts_with("!health") {
             info!(
                 user_id = %msg.author.id,
@@ -191,7 +191,7 @@ pub async fn run() {
     };
 
     // Define the intents for our bot. Intents tell Discord which events our bot wants to receive.
-    // For this bot, we need `GUILD_MESSAGES` to receive message events in servers,
+    // For this bot, we need `GUILD_MESSAGES` to receive message server events,
     // and `MESSAGE_CONTENT` to read the content of the messages.
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
     info!("Configured bot intents: GUILD_MESSAGES | MESSAGE_CONTENT");
@@ -232,7 +232,7 @@ mod tests {
     fn test_handler_creation() {
         let handler = Handler;
         // Test that Handler can be created (zero-sized type)
-        assert_eq!(std::mem::size_of_val(&handler), 0);
+        assert_eq!(size_of_val(&handler), 0);
     }
 
     #[test]
@@ -341,7 +341,7 @@ mod tests {
 
     #[test]
     fn test_mentions_check_logic() {
-        // Test the mentions logic used in summon command
+        // Test the mention logic used in summon command
         let empty_mentions: Vec<String> = vec![];
         let with_mentions = vec!["@user1".to_string(), "@user2".to_string()];
 
