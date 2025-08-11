@@ -181,16 +181,16 @@ impl EventHandler for Handler {
                     error!(error = ?why, "Failed to send health command usage message");
                 }
                 return;
-            }
-
-            match check_health(msg.content).await {
-                Ok(status) => {
-                    if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
-                        error!(error = ?why, "Failed to send health response");
+            } else {
+                match check_health(msg.content).await {
+                    Ok(status) => {
+                        if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
+                            error!(error = ?why, "Failed to send health response");
+                        }
                     }
-                }
-                Err(e) => {
-                    error!(error = ?e, "Failed to check backend health");
+                    Err(e) => {
+                        error!(error = ?e, "Failed to check backend health");
+                    }
                 }
             }
         }
