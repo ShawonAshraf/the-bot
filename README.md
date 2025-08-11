@@ -72,12 +72,3 @@ docker build -t the-guy-bot:latest .
 
 docker run -e DISCORD_TOKEN=your_token_here the-guy-bot:latest
 ```
-
-### Triggering releases
-
-Releases are triggered on tag pushes.
-
-```bash
-git tag version_number
-git push origin version_number
-```
