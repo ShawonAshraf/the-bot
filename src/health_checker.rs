@@ -14,30 +14,21 @@ struct ParsedData {
 }
 
 fn format_response(service: &str, environment: &str, status: &str) -> String {
-    let (emoji, status_text, color_bar) = if status.to_lowercase() == "ok" {
-        ("🚀", "Service Healthy", "```diff\n+ ")
+    let (emoji, status_text) = if status.to_lowercase() == "ok" {
+        ("🚀", "Service Healthy")
     } else {
-        ("⚠️", "Service Down", "```diff\n- ")
+        ("⚠️", "Service Down")
     };
 
     format!(
-        "{}```\n{} | {}\n\n{} has been checked\n\n**Environment**           **Status**\n{}                    {}\n\n**Health Check**\n{} {}\n```",
-        color_bar,
+        "```\n{} | {}\n\n{} has been checked\n\nEnvironment          Status\n{}                 {}\n\nHealth Check\n{} {}\n```",
         emoji,
         status_text,
         service,
         environment,
         status.to_uppercase(),
-        if status.to_lowercase() == "ok" {
-            "✅"
-        } else {
-            "❌"
-        },
-        if status.to_lowercase() == "ok" {
-            "Healthy"
-        } else {
-            "Unhealthy"
-        }
+        if status.to_lowercase() == "ok" { "✅" } else { "❌" },
+        if status.to_lowercase() == "ok" { "Healthy" } else { "Unhealthy" }
     )
 }
 
