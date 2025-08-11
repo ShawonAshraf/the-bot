@@ -1,6 +1,8 @@
+use rand::Rng;
 use reqwest::Error;
 use serde::Deserialize;
 use std::env;
+use tracing::info;
 
 #[derive(Deserialize, Debug)]
 struct HealthResponse {
@@ -27,9 +29,40 @@ fn format_response(service: &str, environment: &str, status: &str) -> String {
         service,
         environment,
         status.to_uppercase(),
-        if status.to_lowercase() == "ok" { "✅" } else { "❌" },
-        if status.to_lowercase() == "ok" { "Healthy" } else { "Unhealthy" }
+        if status.to_lowercase() == "ok" {
+            "✅"
+        } else {
+            "❌"
+        },
+        if status.to_lowercase() == "ok" {
+            "Healthy"
+        } else {
+            "Unhealthy"
+        }
     )
+}
+
+fn send_funny() -> String {
+    // long replies
+    let lmaos: Vec<&str> = [
+        "এই মেসেজ কেডায় দিসে? 🤬",
+        "আর কাম কাজ নাই? 🥴",
+        "পুৎ কইরা দিমু 😈",
+        "স্বজন হারানোর বেদনা আমিও বুঝি 😭",
+        "আহো ভাতিজা আহো 😈",
+        "আমি জুনায়েদ 😇",
+        "সাগর, তুমি ভালো হয়ে যাও, মাসুদ হয়নি, তুমি হউ। 🥸",
+        "ইংরেজিতে যেহেতু বুইলছেন, ঠিকই হবে! 🤓",
+        "চ্যালেঞ্জিং টাইমস! 😎",
+        "১০% নিয়া গেলো লন্ডনের ই বাসে রে, মরার কোকিলে! 🐦‍⬛",
+    ]
+    .to_vec();
+
+    // pick a random message from lmaos
+    // make the random selection using rand::Rng
+    let random_index = rand::rng().random_range(0..lmaos.len());
+    let lmao_msg = lmaos[random_index];
+    lmao_msg.to_string()
 }
 
 fn parse_message(message: &str) -> Result<ParsedData, String> {
@@ -37,15 +70,18 @@ fn parse_message(message: &str) -> Result<ParsedData, String> {
     let parts: Vec<&str> = message.split_whitespace().collect();
 
     // Check if the message has at least 3 parts
-    if parts.len() < 3 {
-        return Err(
-            "Invalid message format. Expected format: '!health <service> <environment>'".into(),
-        );
+    if parts.len() != 3 {
+        let funny_response = send_funny();
+        return Err(funny_response.as_str().into());
     }
 
     // Extract service and environment
     let service = parts[1].to_string();
     let environment = parts[2].to_string();
+
+    if service != "backend" && service != "frontend" {
+        return Err(send_funny().as_str().into());
+    }
 
     Ok(ParsedData {
         service,
@@ -54,6 +90,7 @@ fn parse_message(message: &str) -> Result<ParsedData, String> {
 }
 
 pub async fn check_health(message: String) -> Result<String, Error> {
+    info!("Received health check request: {}", message);
     // parse the message
     let parsed = match parse_message(&message) {
         Ok(data) => data,
@@ -69,10 +106,7 @@ pub async fn check_health(message: String) -> Result<String, Error> {
     let url = match env::var(&url_var) {
         Ok(url) => url,
         Err(_) => {
-            return Ok(format!(
-                "The URL for {} in {} environment couldn't be found in the environment variables. Please set the {} variable.",
-                parsed.service, parsed.environment, url_var
-            ));
+            return Ok("এই এন্ডপয়েন্টের কোন হদিস পাইলাম না! 😅".to_string());
         }
     };
 
