@@ -10,6 +10,30 @@ use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use tracing::{debug, error, info};
 
+// Send a funny message on failure
+fn send_funny() -> String {
+    // long replies
+    let lmaos: Vec<&str> = [
+        "এই মেসেজ কেডায় দিসে? 🤬",
+        "আর কাম কাজ নাই? 🥴",
+        "পুৎ কইরা দিমু 😈",
+        "স্বজন হারানোর বেদনা আমিও বুঝি 😭",
+        "আহো ভাতিজা আহো 😈",
+        "আমি জুনায়েদ 😇",
+        "সাগর, তুমি ভালো হয়ে যাও, মাসুদ হয়নি, তুমি হউ। 🥸",
+        "ইংরেজিতে যেহেতু বুইলছেন, ঠিকই হবে! 🤓",
+        "চ্যালেঞ্জিং টাইমস! 😎",
+        "১০% নিয়া গেলো লন্ডনের ই বাসে রে, মরার কোকিলে! 🐦‍⬛",
+    ]
+    .to_vec();
+
+    // pick a random message from lmaos
+    // make the random selection using rand::Rng
+    let random_index = rand::rng().random_range(0..lmaos.len());
+    let lmao_msg = lmaos[random_index];
+    lmao_msg.to_string()
+}
+
 // Define a struct to hold our event handler.
 // It doesn't need any data for this simple bot.
 struct Handler;
@@ -150,46 +174,23 @@ impl EventHandler for Handler {
                 "Processing health command"
             );
 
-            let msg_parts: Vec<&str> = msg.content.split_whitespace().collect();
-            if msg.content.len() > 30 || msg_parts[1] != "backend" || msg_parts[1] != "frontend" {
-                // long replies
-                let lmaos: Vec<&str> = [
-                    "এই মেসেজ কেডায় দিসে? 🤬",
-                    "আর কাম কাজ নাই? 🥴",
-                    "পুৎ কইরা দিমু 😈",
-                    "স্বজন হারানোর বেদনা আমিও বুঝি 😭",
-                    "আহো ভাতিজা আহো 😈",
-                    "আমি জুনায়েদ 😇",
-                    "সাগর, তুমি ভালো হয়ে যাও, মাসুদ হয়নি, তুমি হউ। 🥸",
-                    "ইংরেজিতে যেহেতু বুইলছেন, ঠিকই হবে! 🤓",
-                    "চ্যালেঞ্জিং টাইমস! 😎",
-                    "১০% নিয়া গেলো লন্ডনের ই বাসে রে, মরার কোকিলে! 🐦‍⬛",
-                ]
-                .to_vec();
-
-                // pick a random message from lmaos
-                // make the random selection using rand::Rng
-                let random_index = rand::rng().random_range(0..=lmaos.len());
-                let lmao_msg = lmaos[random_index];
-
-                error!(
-                    channel_id = %msg.channel_id,
-                    user_id = %msg.author.id,
-                    "Health command received with too many arguments"
-                );
-                if let Err(why) = msg.channel_id.say(&ctx.http, lmao_msg).await {
-                    error!(error = ?why, "Failed to send health command usage message");
-                }
-                return;
-            } else {
-                match check_health(msg.content).await {
-                    Ok(status) => {
-                        if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
-                            error!(error = ?why, "Failed to send health response");
-                        }
+            match check_health(msg.content).await {
+                Ok(status) => {
+                    if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
+                        error!(error = ?why, "Failed to send health response");
                     }
-                    Err(e) => {
-                        error!(error = ?e, "Failed to check backend health");
+                }
+                Err(e) => {
+                    error!(
+                        error = ?e,
+                        channel_id = %msg.channel_id,
+                        user_id = %msg.author.id,
+                        "Health check failed, sending funny message"
+                    );
+
+                    let funny_message = send_funny();
+                    if let Err(why) = msg.channel_id.say(&ctx.http, funny_message.as_str()).await {
+                        error!(error = ?why, "Failed to send health response");
                     }
                 }
             }
