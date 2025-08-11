@@ -66,6 +66,10 @@ fn send_funny() -> String {
 }
 
 fn parse_message(message: &str) -> Result<ParsedData, String> {
+    // allowed values
+    let allowed_services = ["backend", "frontend"];
+    let allowed_environments = ["dev", "staging", "prod", "qa"];
+    
     // Split the message into parts
     let parts: Vec<&str> = message.split_whitespace().collect();
 
@@ -78,9 +82,13 @@ fn parse_message(message: &str) -> Result<ParsedData, String> {
     // Extract service and environment
     let service = parts[1].to_string();
     let environment = parts[2].to_string();
-
-    if service != "backend" && service != "frontend" {
-        return Err(send_funny().as_str().into());
+    
+    // check if service and environment are valid
+    if !allowed_services.contains(&service.as_str()) {
+        return Err("এই নামে আমাদের কোন ডেপ্লয়মেন্ট নাই মিয়া, মজা লন?".into());
+    }
+    if !allowed_environments.contains(&environment.as_str()) {
+        return Err("এই নামে আমরা কোন টিম হায়ার করি নাই। এরা কি মাগনা কাজ করে?".into());
     }
 
     Ok(ParsedData {
@@ -106,7 +114,7 @@ pub async fn check_health(message: String) -> Result<String, Error> {
     let url = match env::var(&url_var) {
         Ok(url) => url,
         Err(_) => {
-            return Ok("এই এন্ডপয়েন্টের কোন হদিস পাইলাম না! 😅".to_string());
+            return Ok("এই জিনিসের কোন হদিস পাইলাম না! 😅".to_string());
         }
     };
 
