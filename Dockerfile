@@ -8,4 +8,4 @@ RUN apt-get update && apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev &&
 
 RUN cargo build --profile release
 
-CMD ["./target/release/summoner-emoji-bot", "bot"]
+CMD ["./target/release/the-guy-bot", "bot"]

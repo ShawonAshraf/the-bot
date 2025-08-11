@@ -1,4 +1,4 @@
-# summoner-emoji-bot
+# the-guy-bot
 
 > A random emoji generator bot in Rust
 
@@ -11,7 +11,8 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 1. **Emoji Generator CLI**: A CLI program that generates a random set of emojis as a string (currently hardcoded to 5
    emojis) from a predefined list and then copies it to the
    clipboard.
-2. **Discord Bot**: A Discord bot that listens for specific commands and then responds with a random set of emojis.
+2. **Discord Bot**: A Discord bot that listens for specific commands and then responds with a random set of emojis
+   or messages.
 
 ## Usage
 
@@ -26,14 +27,14 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 Build the project locally (check [Local Build](#local-build)) and then run:
 
 ```bash
-chmod +x summoner-emoji-bot-linux-x86_64
+chmod +x target/release/the-guy-bot
 
 # for emoji generation cli
-./summoner-emoji-bot-linux-x86_64
+./the-guy-bot emoji
 
 # for discord bot
 export DISCORD_TOKEN=your_token_here
-./summoner-emoji-bot-linux-x86_64 bot
+./the-guy-bot bot
 ```
 
 ### Local Build
@@ -50,10 +51,10 @@ cargo build --release
 # make a directory at the project root named penguin to store the build
 mkdir -p penguin
 # Build the image
-docker build -f penguin.Dockerfile -t summoner-linux-builder .
+docker build -f penguin.Dockerfile -t guybot-linux-builder .
 
 # Run the container with volume mount to save binaries locally
-docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin summoner-linux-builder
+docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin guybot-linux-builder
 ```
 
 ### Testing
@@ -67,9 +68,9 @@ cargo test
 To run the bot as a docker container:
 
 ```bash
-docker build -t summoner-emoji-bot:latest .
+docker build -t the-guy-bot:latest .
 
-docker run -e DISCORD_TOKEN=your_token_here summoner-emoji-bot:latest
+docker run -e DISCORD_TOKEN=your_token_here the-guy-bot:latest
 ```
 
 ### Triggering releases
