@@ -19,7 +19,7 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 > [!NOTE]
 > Make sure to create a discord bot application on the discord developer portal with the following permission and scope
 > first!:
-> `bot` and `send messages`. Also enable `GUILD_MESSAGES` permissions in the previeleged access section so that the bot
+> `bot` and `send messages`. Also enable `GUILD_MESSAGES` permissions in the privileged access section so that the bot
 > can read
 > instructions.
 
