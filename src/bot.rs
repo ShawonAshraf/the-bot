@@ -150,7 +150,8 @@ impl EventHandler for Handler {
                 "Processing health command"
             );
 
-            match check_health(msg.content).await {
+            // avoid ownership movement by cloning msg!
+            match check_health(msg.clone().content).await {
                 Ok(status) => {
                     if let Err(why) = msg.channel_id.say(&ctx.http, &status).await {
                         error!(error = ?why, "Failed to send health response");
@@ -166,6 +167,39 @@ impl EventHandler for Handler {
                 }
             }
         }
+
+        if msg.content.starts_with("!gaysay") {
+            // Disclaimer: this command isn't used to demean people of any community or class
+            // :)
+            // but this is a typo that people willfully are going to make given the name of the bot
+            // besides if you're homophobic, get some help!
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing gaysay command"
+            );
+
+            if let Err(why) = msg
+                .channel_id
+                .say(
+                    &ctx.http,
+                    "Talha you can't make say that because I asked Dipto for a new feature!.",
+                )
+                .await
+            {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    "Cheeky!"
+                );
+            }
+        }
+
+        // if msg.content.starts_with("guysay") {
+        //
+        // }
     }
 
     // This method is called when the bot is ready to start receiving events.

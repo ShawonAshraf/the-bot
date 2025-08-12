@@ -42,7 +42,7 @@ fn format_response(service: &str, environment: &str, status: &str) -> String {
     )
 }
 
-fn send_funny() -> String {
+pub fn send_funny() -> String {
     // long replies
     let lmaos: Vec<&str> = [
         "এই মেসেজ কেডায় দিসে? 🤬",
