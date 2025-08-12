@@ -43,6 +43,31 @@ export DISCORD_TOKEN=your_token_here
 ./the-guy-bot guysay file_dir
 ```
 
+### Bot commands
+
+- `!oracle`: Responds with a random set of emojis.
+- `!guysay`: Responds with a random fortune message in a cowsay style.
+- `!summon @mention`: Responds with a random set of emojis when a user is mentioned after the command.
+- `!joke`: Responds with a random joke from the [JokeAPI](https://jokeapi.dev/).
+- `!gaysay`: Don't make this typo
+- `!health`: Hits the health check endpoint of an api and responds with the status code. (you have to set the backends
+  as env vars)
+  Example for `!health`:
+
+If you want to check the health of `BACKEND_DEV_ULR`, set the environment variable like this:
+
+```bash
+export BACKEND_DEV_URL=https://example.com/health
+# the format is: <endpoint/service>_<environment>_url (all upper case)
+```
+
+The run in Discord:
+
+```bash
+!health backend dev
+# the format is: <endpoint/service> <environment> (all lower case)
+```
+
 ### Local Build
 
 ```bash

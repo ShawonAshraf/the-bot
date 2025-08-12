@@ -14,7 +14,7 @@ async fn main() {
     // Initialize tracing subscriber with structured logging
     tracing_subscriber::fmt::init();
 
-    info!("Starting Summoner Emoji Bot application");
+    info!("Starting bot");
 
     let args = env::args().collect::<Vec<String>>();
 
@@ -22,9 +22,9 @@ async fn main() {
     if args.len() > 2 && args[1] == "bot" {
         // get folder dir
         let folder_path = &args[2];
+        info!("Starting bot with folder: {}", folder_path);
         // assure that the folder path exists
         if std::path::Path::new(folder_path).exists() {
-            info!("Starting bot with folder: {}", folder_path);
             // Start the bot with the provided folder path
             bot::run(folder_path).await;
             return;
