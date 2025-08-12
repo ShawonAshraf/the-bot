@@ -61,7 +61,7 @@ export BACKEND_DEV_URL=https://example.com/health
 # the format is: <endpoint/service>_<environment>_url (all upper case)
 ```
 
-The run in Discord:
+Then run in Discord:
 
 ```bash
 !health backend dev
