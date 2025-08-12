@@ -6,9 +6,6 @@ mod health_checker;
 mod jokes;
 mod quote_loader;
 
-use fcowsay;
-use rfortune;
-
 #[tokio::main]
 async fn main() {
     // Initialize tracing subscriber with structured logging
@@ -45,15 +42,15 @@ async fn main() {
     // }
 
     // create a path object
-    let fortune_path = std::path::Path::new("files/riddles.txt");
-    let fortunes = rfortune::loader::FortuneFile::from_file(fortune_path);
-
-    if let Ok(fortunes) = fortunes {
-        let quotes = fortunes.quotes;
-        let random_quote = rfortune::utils::random_quote(&quotes);
-        let random_quote = fcowsay::animalsay(random_quote, "cow");
-        println!("{}", random_quote);
-    } else {
-        eprintln!("Failed to load fortunes from file: {:?}", fortune_path);
+    let quotes = quote_loader::load_from_folder("files");
+    match quotes {
+        Ok(quotes) => {
+            let cow_say = guysay::say(&quotes);
+            println!("{}", cow_say);
+        }
+        Err(e) => {
+            eprintln!("Error loading quotes: {}", e);
+        }
     }
+    
 }
