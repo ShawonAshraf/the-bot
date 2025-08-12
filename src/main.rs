@@ -1,11 +1,13 @@
 mod bot;
 mod clipboard;
 mod emoji_generator;
-mod guydata;
+mod guysay;
 mod health_checker;
 mod jokes;
+mod quote_loader;
 
-use fcowsay::animalsay;
+use fcowsay;
+use rfortune;
 
 #[tokio::main]
 async fn main() {
@@ -42,7 +44,16 @@ async fn main() {
     //     error!("Invalid arguments supplied");
     // }
 
-    let funny = health_checker::send_funny();
-    let out = animalsay(funny.as_str(), "cow");
-    println!("{}", out);
+    // create a path object
+    let fortune_path = std::path::Path::new("files/riddles.txt");
+    let fortunes = rfortune::loader::FortuneFile::from_file(fortune_path);
+
+    if let Ok(fortunes) = fortunes {
+        let quotes = fortunes.quotes;
+        let random_quote = rfortune::utils::random_quote(&quotes);
+        let random_quote = fcowsay::animalsay(random_quote, "cow");
+        println!("{}", random_quote);
+    } else {
+        eprintln!("Failed to load fortunes from file: {:?}", fortune_path);
+    }
 }
