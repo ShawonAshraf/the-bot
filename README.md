@@ -71,7 +71,7 @@ The run in Discord:
 ### Local Build
 
 ```bash
-cargo build --release
+cargo build --profile release
 ```
 
 > [!NOTE]
