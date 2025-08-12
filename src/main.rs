@@ -19,11 +19,18 @@ async fn main() {
     let args = env::args().collect::<Vec<String>>();
 
     // Check if the user provided a command-line argument
-    if args.len() > 1 && args[1] == "bot" {
-        // If the argument is "bot", run the bot
-        info!("Starting Discord bot mode");
-        bot::run().await;
-        return;
+    if args.len() > 2 && args[1] == "bot" {
+        // get folder dir
+        let folder_path = &args[2];
+        // assure that the folder path exists
+        if std::path::Path::new(folder_path).exists() {
+            info!("Starting bot with folder: {}", folder_path);
+            // Start the bot with the provided folder path
+            bot::run(folder_path).await;
+            return;
+        } else {
+            error!("Folder does not exist: {}", folder_path);
+        }
     } else if args.len() > 1 && args[1] == "emoji" {
         // If no argument or a different argument is provided, run the emoji generator
         info!("Starting emoji generator mode");

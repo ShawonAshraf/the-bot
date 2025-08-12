@@ -32,9 +32,15 @@ chmod +x target/release/the-guy-bot
 # for emoji generation cli
 ./the-guy-bot emoji
 
+# the file_dir should contain at least one file in fortune format
+# check https://github.com/umpire274/rFortune?tab=readme-ov-file#-file-format
+
 # for discord bot
 export DISCORD_TOKEN=your_token_here
-./the-guy-bot bot
+./the-guy-bot bot file_dir
+
+# for guysay (a fortune powered cowsay)
+./the-guy-bot guysay file_dir
 ```
 
 ### Local Build
