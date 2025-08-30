@@ -5,7 +5,7 @@
 // Make sure to add `arboard = "3.6.1"` to your [dependencies] in Cargo.toml.
 use arboard::Clipboard;
 use std::error::Error;
-use tracing::{info, warn, debug};
+use tracing::{warn, debug};
 
 /// Copies the given text to the system clipboard.
 ///
@@ -54,6 +54,5 @@ pub fn copy_to_clipboard(text: &str) -> Result<(), Box<dyn Error>> {
         })?;
 
     // If both operations succeed, return Ok.
-    info!(text_length = text.len(), "Successfully copied text to clipboard");
     Ok(())
 }
