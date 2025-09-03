@@ -210,7 +210,7 @@ impl EventHandler for Handler {
                 .channel_id
                 .say(
                     &ctx.http,
-                    "Talha you can't make say that because I asked Dipto for a new feature!.",
+                    "ব্রো ভিসিতে আসো ;) ",
                 )
                 .await
             {
