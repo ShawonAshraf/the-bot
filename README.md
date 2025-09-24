@@ -27,10 +27,10 @@ approval message. Then I was suggested to make a discord bot based on it. There 
 Build the project locally (check [Local Build](#local-build)) and then run:
 
 ```bash
-chmod +x target/release/the-guy-bot
+chmod +x target/release/the-bot
 
 # for emoji generation cli
-./the-guy-bot emoji
+./the-bot emoji
 
 # the file_dir should contain at least one file in fortune format
 # check https://github.com/umpire274/rFortune?tab=readme-ov-file#-file-format
@@ -45,16 +45,19 @@ export DISCORD_TOKEN=your_token_here
 
 ### Bot commands
 
-- `!oracle`: Responds with a random set of emojis.
-- `!guysay`: Responds with a random fortune message in a cowsay style.
-- `!summon @mention`: Responds with a random set of emojis when a user is mentioned after the command.
-- `!joke`: Responds with a random joke from the [JokeAPI](https://jokeapi.dev/).
+- `!oracle`: Responds with a random set of emojis
+- `!guysay`: Responds with a random fortune message in a cowsay style
+- `!summon @mention`: Responds with a random set of emojis when a user is mentioned after the command
+- `!joke`: Responds with a random joke from the [JokeAPI](https://jokeapi.dev/)
 - `!gaysay`: Don't make this typo
 - `!health`: Hits the health check endpoint of an api and responds with the status code. (you have to set the backends
   as env vars)
+- `!no`: Tell your PM that you won't be doing it
+- `!breakfast`: Breakfast cereal with AI? Anyone?
+- `!sprint`: Tell your PM that this sprint ain't sprinting
   Example for `!health`:
 
-If you want to check the health of `BACKEND_DEV_ULR`, set the environment variable like this:
+If you want to check the health of `BACKEND_DEV_URL`, set the environment variable like this:
 
 ```bash
 export BACKEND_DEV_URL=https://example.com/health
@@ -82,14 +85,14 @@ cargo build --profile release
 # make a directory at the project root named penguin to store the build
 mkdir -p penguin
 # Build the image
-docker build -f penguin.Dockerfile -t guybot-linux-builder .
+docker build -f penguin.Dockerfile -t bot-linux-builder .
 
 # Run the container with volume mount to save binaries locally
 # *nix
-docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin guybot-linux-builder
+docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin bot-linux-builder
 
 # windows (ps)
-docker run -v ${pwd}:/bot -v ${pwd}/penguin:/penguin guybot-linux-builder
+docker run -v ${pwd}:/bot -v ${pwd}/penguin:/penguin bot-linux-builder
 ```
 
 ### Testing
@@ -103,7 +106,7 @@ cargo test
 To run the bot as a docker container:
 
 ```bash
-docker build -t the-guy-bot:latest .
+docker build -t the-bot:latest .
 
-docker run -e DISCORD_TOKEN=your_token_here the-guy-bot:latest
+docker run -e DISCORD_TOKEN=your_token_here the-bot:latest
 ```

@@ -2259,7 +2259,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "the-guy-bot"
+name = "the-bot"
 version = "0.1.0"
 dependencies = [
  "arboard",
