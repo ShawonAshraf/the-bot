@@ -243,6 +243,84 @@ impl EventHandler for Handler {
                 );
             }
         }
+
+        if msg.content.starts_with("!sprint") {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing sprint command"
+            );
+
+            if let Err(why) = msg
+                .channel_id
+                .say(
+                    &ctx.http,
+                    "Sprint in the AI world means, really fast.",
+                )
+                .await
+            {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    "The sprint failed perhaps?"
+                );
+            }
+
+        }
+
+        if msg.content.starts_with("!no") {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing no command"
+            );
+
+            if let Err(why) = msg
+                .channel_id
+                .say(
+                    &ctx.http,
+                    "The no word has deep philosophical meaning to me. It tells me that I can tell anyone, no. Nobody can stop me.",
+                )
+                .await
+            {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    "No!"
+                );
+            }
+
+        }
+
+        if msg.content.starts_with("!breakfast") {
+            info!(
+                user_id = %msg.author.id,
+                username = %msg.author.name,
+                channel_id = %msg.channel_id,
+                "Processing no command"
+            );
+
+            if let Err(why) = msg
+                .channel_id
+                .say(
+                    &ctx.http,
+                    "I had granola and corn flakes this breakfast, but decided to add AI on top of it anyway.",
+                )
+                .await
+            {
+                error!(
+                    error = ?why,
+                    channel_id = %msg.channel_id,
+                    user_id = %msg.author.id,
+                    "No!"
+                );
+            }
+
+        }
     }
 
     // This method is called when the bot is ready to start receiving events.
