@@ -85,7 +85,11 @@ mkdir -p penguin
 docker build -f penguin.Dockerfile -t guybot-linux-builder .
 
 # Run the container with volume mount to save binaries locally
+# *nix
 docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin guybot-linux-builder
+
+# windows (ps)
+docker run -v ${pwd}:/bot -v ${pwd}/penguin:/penguin guybot-linux-builder
 ```
 
 ### Testing
