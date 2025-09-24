@@ -1,4 +1,4 @@
-# the-guy-bot
+# the-bot
 
 > A random emoji generator bot in Rust
 
