@@ -38,6 +38,33 @@ impl Handler {
     pub fn new(state: Arc<BotState>) -> Self {
         Self { state }
     }
+
+    async fn send_simple_reply(
+        &self,
+        ctx: &Context,
+        msg: &Message,
+        command_name: &str,
+        response: &str,
+        error_note: &str,
+    ) {
+        info!(
+            user_id = %msg.author.id,
+            username = %msg.author.name,
+            channel_id = %msg.channel_id,
+            "Processing {} command",
+            command_name
+        );
+
+        if let Err(why) = msg.channel_id.say(&ctx.http, response).await {
+            error!(
+                error = ?why,
+                channel_id = %msg.channel_id,
+                user_id = %msg.author.id,
+                "{}",
+                error_note
+            );
+        }
+    }
 }
 
 // Implement the `EventHandler` trait for our `Handler` struct.
@@ -194,34 +221,6 @@ impl EventHandler for Handler {
             }
         }
 
-        if msg.content.starts_with("!gaysay") {
-            // Disclaimer: this command isn't used to demean people of any community or class
-            // :)
-            // but this is a typo that people willfully are going to make given the name of the bot
-            // besides if you're homophobic, get some help!
-            info!(
-                user_id = %msg.author.id,
-                username = %msg.author.name,
-                channel_id = %msg.channel_id,
-                "Processing gaysay command"
-            );
-
-            if let Err(why) = msg
-                .channel_id
-                .say(
-                    &ctx.http,
-                    "ব্রো, এসো তোমাকে ব্লেম দেই <3 ",
-                )
-                .await
-            {
-                error!(
-                    error = ?why,
-                    channel_id = %msg.channel_id,
-                    user_id = %msg.author.id,
-                    "Cheeky!"
-                );
-            }
-        }
 
         if msg.content.starts_with("!guysay") {
             info!(
@@ -244,82 +243,69 @@ impl EventHandler for Handler {
             }
         }
 
-        if msg.content.starts_with("!sprint") {
-            info!(
-                user_id = %msg.author.id,
-                username = %msg.author.name,
-                channel_id = %msg.channel_id,
-                "Processing sprint command"
-            );
-
-            if let Err(why) = msg
-                .channel_id
-                .say(
-                    &ctx.http,
-                    "Sprint in the AI world means, really fast.",
+        // just single string return blocks
+        if msg.content.starts_with("!gaysay") {
+            // Disclaimer: this command isn't used to demean people of any community or class
+            // :)
+            // but this is a typo that people willfully are going to make given the name of the bot
+            // besides if you're homophobic, get some help!
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "gaysay",
+                    "ব্রো, এসো তোমাকে ব্লেম দেই <3 ",
+                    "Cheeky!",
                 )
-                .await
-            {
-                error!(
-                    error = ?why,
-                    channel_id = %msg.channel_id,
-                    user_id = %msg.author.id,
-                    "The sprint failed perhaps?"
-                );
-            }
+                .await;
+        }
 
+        if msg.content.starts_with("!sprint") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "sprint",
+                    "Sprint in the AI world means, really fast.",
+                    "The sprint failed perhaps?",
+                )
+                .await;
         }
 
         if msg.content.starts_with("!no") {
-            info!(
-                user_id = %msg.author.id,
-                username = %msg.author.name,
-                channel_id = %msg.channel_id,
-                "Processing no command"
-            );
-
-            if let Err(why) = msg
-                .channel_id
-                .say(
-                    &ctx.http,
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "no",
                     "The no word has deep philosophical meaning to me. It tells me that I can tell anyone, no. Nobody can stop me.",
+                    "No!",
                 )
-                .await
-            {
-                error!(
-                    error = ?why,
-                    channel_id = %msg.channel_id,
-                    user_id = %msg.author.id,
-                    "No!"
-                );
-            }
-
+                .await;
         }
 
         if msg.content.starts_with("!breakfast") {
-            info!(
-                user_id = %msg.author.id,
-                username = %msg.author.name,
-                channel_id = %msg.channel_id,
-                "Processing no command"
-            );
-
-            if let Err(why) = msg
-                .channel_id
-                .say(
-                    &ctx.http,
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "breakfast",
                     "I had granola and corn flakes this breakfast, but decided to add AI on top of it anyway.",
+                    "No!",
                 )
-                .await
-            {
-                error!(
-                    error = ?why,
-                    channel_id = %msg.channel_id,
-                    user_id = %msg.author.id,
-                    "No!"
-                );
-            }
+                .await;
+        }
 
+        if msg.content.starts_with("!PM") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "PM",
+                    "ভাই পরে আসেন এই টিকেট এখন সলভ হবে না।",
+                    "No!",
+                )
+                .await;
         }
     }
 
