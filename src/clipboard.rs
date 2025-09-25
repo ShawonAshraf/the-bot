@@ -24,7 +24,7 @@ use tracing::{warn, debug};
 /// # Example
 ///
 /// ```
-/// use crate::clipboard::copy_to_clipboard;
+/// use the_bot::clipboard::copy_to_clipboard;
 /// use tracing::{info, error};
 ///
 /// match copy_to_clipboard("hello world") {

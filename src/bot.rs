@@ -382,3 +382,4 @@ pub async fn run(quotes_folder: &str) {
         info!("Discord client shut down gracefully");
     }
 }
+
