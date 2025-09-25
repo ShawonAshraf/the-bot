@@ -37,10 +37,10 @@ chmod +x target/release/the-bot
 
 # for discord bot
 export DISCORD_TOKEN=your_token_here
-./the-guy-bot bot file_dir
+./the-bot bot file_dir
 
 # for guysay (a fortune powered cowsay)
-./the-guy-bot guysay file_dir
+./the-bot guysay file_dir
 ```
 
 ### Bot commands
