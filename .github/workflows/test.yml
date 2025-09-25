@@ -19,4 +19,4 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
       - uses: actions/checkout@v4
       - name: Run tests
-        run: cargo test -- --test-threads=8
+        run: cargo test --all -- --test-threads=8  --quiet
