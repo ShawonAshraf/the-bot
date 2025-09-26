@@ -89,10 +89,10 @@ docker build -f penguin.Dockerfile -t bot-linux-builder .
 
 # Run the container with volume mount to save binaries locally
 # *nix
-docker run -v $(pwd):/bot -v $(pwd)/penguin:/penguin bot-linux-builder
+docker run --rm -v ./path/file -v $(pwd):/bot -v $(pwd)/penguin:/penguin bot-linux-builder
 
 # windows (ps)
-docker run -v ${pwd}:/bot -v ${pwd}/penguin:/penguin bot-linux-builder
+docker run --rm -v ${pwd}:/bot -v ${pwd}/penguin:/penguin bot-linux-builder
 ```
 
 ### Testing
