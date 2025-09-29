@@ -291,7 +291,7 @@ impl EventHandler for Handler {
                     &msg,
                     "breakfast",
                     "I had granola and corn flakes this breakfast, but decided to add AI on top of it anyway.",
-                    "No!",
+                    "breakfast",
                 )
                 .await;
         }
@@ -303,7 +303,19 @@ impl EventHandler for Handler {
                     &msg,
                     "PM",
                     "ভাই পরে আসেন এই টিকেট এখন সলভ হবে না।",
-                    "No!",
+                    "pm",
+                )
+                .await;
+        }
+
+        if msg.content.starts_with("!QA") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "!QA",
+                    "বাগ পাইসেন? আচ্ছা লিনিয়ারে টিকেট দেন। দেখতেসি বিষয়টা।",
+                    "qa",
                 )
                 .await;
         }
