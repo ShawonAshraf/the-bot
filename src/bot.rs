@@ -333,13 +333,28 @@ impl EventHandler for Handler {
         }
 
         if msg.content.starts_with("!biriyani") {
+            let url = "https://www.youtube.com/watch?v=xvFZjo5PgG0";
+            let response = format!("🎭 [😁]({})\n💡", url);
+
             self
                 .send_simple_reply(
                     &ctx,
                     &msg,
                     "!biriyani",
-                    "চলেন একদিন পুরান ঢাকা যাই বিরিয়ানি খাইতে",
+                    response.as_str(),
                     "biriyani"
+                )
+                .await;
+        }
+
+        if msg.content.starts_with("!failed") {
+            self.
+                send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "!failed",
+                    "Don't fix it just revert!",
+                    "failed"
                 )
                 .await;
         }

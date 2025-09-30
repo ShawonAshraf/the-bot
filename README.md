@@ -55,7 +55,11 @@ export DISCORD_TOKEN=your_token_here
 - `!no`: Tell your PM that you won't be doing it
 - `!breakfast`: Breakfast cereal with AI? Anyone?
 - `!sprint`: Tell your PM that this sprint ain't sprinting
-  Example for `!health`:
+- `!failed`
+- `!biriyani`
+- `!abubakr`
+  
+Example for `!health`:
 
 If you want to check the health of `BACKEND_DEV_URL`, set the environment variable like this:
 
