@@ -320,13 +320,13 @@ impl EventHandler for Handler {
                 .await;
         }
 
-        if msg.content.starts_with("!abubakr") {
+        if msg.content.starts_with("!abubakar") {
             self
                 .send_simple_reply(
                     &ctx,
                     &msg,
                     "!abubakr",
-                    "ভাই এত চাঙ্ক করেও কন্টেক্সট এ হচ্ছে না।",
+                    "All I want for Eid is chunks!",
                     "abubakr"
                 )
                 .await;
@@ -334,7 +334,7 @@ impl EventHandler for Handler {
 
         if msg.content.starts_with("!biriyani") {
             let url = "https://www.youtube.com/watch?v=xvFZjo5PgG0";
-            let response = format!("🎭 [😁]({})\n💡", url);
+            let response = format!("🎭 💡 {}\n", url);
 
             self
                 .send_simple_reply(
