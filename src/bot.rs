@@ -359,6 +359,18 @@ impl EventHandler for Handler {
                 .await;
         }
 
+        if msg.content.starts_with("!talha") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "!talha",
+                    "আপডেট ছাড়া আরেকবার ডাকলে বেতন 10% মাইনাস",
+                    "talha"
+                )
+                .await;
+        }
+
     }
 
     // This method is called when the bot is ready to start receiving events.
