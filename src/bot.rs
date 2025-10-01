@@ -325,9 +325,9 @@ impl EventHandler for Handler {
                 .send_simple_reply(
                     &ctx,
                     &msg,
-                    "!abubakr",
+                    "!abubakar",
                     "All I want for Eid is chunks!",
-                    "abubakr"
+                    "abubakar"
                 )
                 .await;
         }
