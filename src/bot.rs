@@ -302,7 +302,7 @@ impl EventHandler for Handler {
                     &ctx,
                     &msg,
                     "PM",
-                    "ভাই পরে আসেন এই টিকেট এখন সলভ হবে না।",
+                    "LONG LIVE THE PM!",
                     "pm",
                 )
                 .await;
@@ -367,6 +367,18 @@ impl EventHandler for Handler {
                     "!talha",
                     "আপডেট ছাড়া আরেকবার ডাকলে বেতন 10% মাইনাস",
                     "talha"
+                )
+                .await;
+        }
+
+        if msg.content.starts_with("!jiggu") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "!jiggu",
+                    "লোকে বলে আমি প্রোজেক্ট ম্যানেজার কিন্তু আমি আসলে আস্ত অপদার্থ, মুনিয়ার মা, প্লেটে আরো থ্যাপলা দাও, খাই।",
+                    "jiggu"
                 )
                 .await;
         }
