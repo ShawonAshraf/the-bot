@@ -383,6 +383,17 @@ impl EventHandler for Handler {
                 .await;
         }
 
+        if msg.content.starts_with("!ale") {
+            self
+                .send_simple_reply(
+                    &ctx,
+                    &msg,
+                    "!ale",
+                    "You drink the ale, I EAT THE ALE. We're not same bro!",
+                    "ale"
+                ).await;
+        }
+
     }
 
     // This method is called when the bot is ready to start receiving events.
